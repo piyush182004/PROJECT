@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Enhanced Animations */
+        .fade-in { animation: fadeIn 0.6s ease-in; }
+        .slide-up { animation: slideUp 0.8s ease-out; }
+        .glow { animation: glow 2s ease-in-out infinite; }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .8; }
+        }
+
+        /* Enhanced Message Animations */
+        .message-in-right {
+            animation: slideInRight 0.3s ease-out;
+            transform-origin: right;
+        }
+
+        .message-in-left {
+            animation: slideInLeft 0.3s ease-out;
+            transform-origin: left;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Enhanced Glass Effect */
+        .glass-card {
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 204, 255, 0.15);
+            box-shadow: 
+                0 8px 32px 0 rgba(0, 204, 255, 0.1),
+                inset 0 0 32px 0 rgba(0, 204, 255, 0.02);
+        }
+
+        /* Chat Styling */
+        .chat-message {
+            position: relative;
+            margin: 1rem 0;
+            padding: 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+            transition: all 0.3s ease;
+        }
+
+        .chat-message:hover {
+            transform: translateY(-2px);
+        }
+
+        .user-message {
+            margin-left: auto;
+            background: linear-gradient(135deg, #0ea5e9, #2563eb);
+            border-top-right-radius: 0;
+        }
+
+        .ai-message {
+            margin-right: auto;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(0, 204, 255, 0.2);
+            border-top-left-radius: 0;
+        }
+
+        /* Scrollbar Styling */
+        #chat-box::-webkit-scrollbar {
+            width: 6px;
+            background: rgba(0, 204, 255, 0.05);
+        }
+
+        #chat-box::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #0ea5e9, #2563eb);
+            border-radius: 3px;
+        }
+
+        /* Loading Animation */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px;
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white overflow-x-hidden font-['Space_Grotesk']">
+    <!-- Animated Background Elements -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="gradient-line line-1"></div>
+    <div class="gradient-line line-2"></div>
+
+    <div class="container mx-auto px-6 py-12 relative z-10">
+        <h1 class="text-5xl font-bold text-center mb-12 glow">
+            <span class="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
+                📊 Investment Analysis
+            </span>
+        </h1>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <!-- Image Section -->
+            <div class="glass-card p-6 rounded-2xl fade-in">
+                <img src="{{ file_path }}" alt="Uploaded Image" class="w-full h-64 object-cover rounded-lg border-2 border-cyan-400/30 shadow-lg shadow-cyan-500/20">
+            </div>
+
+            <!-- Analysis Section -->
+            <div class="glass-card p-6 rounded-2xl slide-up">
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-2">Classified Land Type</h3>
+                    <p class="text-lg">{{ class_name }} <span class="text-cyan-400">({{ confidence }}% Confidence)</span></p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-cyan-400 mb-2">🔍 AI Business Recommendation</h3>
+                    <p class="text-gray-300 leading-relaxed">{{ investment_advice }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Chat Section -->
+        <div class="glass-card p-6 rounded-2xl max-w-3xl mx-auto slide-up" style="animation-delay: 0.2s">
+            <h2 class="text-2xl font-semibold mb-6 text-center">
+                <span class="bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400 bg-clip-text text-transparent">
+                    💬 Interactive AI Analysis
+                </span>
+            </h2>
+            
+            <div class="chat-container">
+                <div id="chat-box" class="mb-4 p-4 rounded-xl bg-gray-900/50 min-h-[300px] max-h-[500px] overflow-y-auto"></div>
+                <div class="flex space-x-2 bg-gray-800/30 p-3 rounded-xl backdrop-blur">
+                    <input type="text" id="user-input" 
+                           placeholder="Ask about your investment analysis..."
+                           class="flex-1 p-3 rounded-xl bg-gray-800/50 border border-cyan-500/20 
+                                  focus:border-cyan-400 transition-all duration-300 
+                                  focus:ring-2 focus:ring-cyan-400/20 outline-none
+                                  placeholder-gray-400">
+                    <button onclick="sendMessage()" 
+                            class="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl
+                                   font-medium hover:from-cyan-600 hover:to-blue-600 
+                                   transform hover:scale-105 transition-all duration-300
+                                   focus:ring-2 focus:ring-cyan-400/50 flex items-center gap-2">
+                        <span>Send</span>
+                        <svg class="w-4 h-4 transform transition-transform group-hover:translate-x-1" 
+                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Return Button -->
+        <div class="text-center mt-8 fade-in" style="animation-delay: 0.4s">
+            <a href="/" class="group inline-flex items-center gap-2 px-8 py-3 
+                              bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl font-medium
+                              hover:from-cyan-600 hover:to-blue-600 transform hover:scale-105 
+                              transition-all duration-300 shadow-lg hover:shadow-cyan-500/25">
+                <svg class="w-5 h-5 transform transition-transform group-hover:-translate-x-1" 
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span>Try Another Analysis</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            let userText = document.getElementById("user-input").value;
+            if (!userText) return;
+
+            let chatBox = document.getElementById("chat-box");
+            
+            // Add user message with enhanced styling
+            chatBox.innerHTML += `
+                <div class="chat-message user-message message-in-right">
+                    <div class="flex items-center gap-2 mb-1 text-xs text-cyan-100">
+                        <span>You</span>
+                        <span>${new Date().toLocaleTimeString()}</span>
+                    </div>
+                    <p>${userText}</p>
+                </div>
+            `;
+
+            // Add typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator message-in-left';
+            typingIndicator.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            chatBox.appendChild(typingIndicator);
+
+            let response = await fetch("/chat", {
+                method: "POST",
+                body: JSON.stringify({ message: userText }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            let data = await response.json();
+            
+            // Remove typing indicator
+            chatBox.removeChild(typingIndicator);
+
+            // Add AI response with enhanced styling
+            chatBox.innerHTML += `
+                <div class="chat-message ai-message message-in-left">
+                    <div class="flex items-center gap-2 mb-1 text-xs text-cyan-400">
+                        <span>AI Assistant</span>
+                        <span>${new Date().toLocaleTimeString()}</span>
+                    </div>
+                    <p class="leading-relaxed">${data.reply}</p>
+                </div>
+            `;
+
+            document.getElementById("user-input").value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Add Enter key support
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Enhanced scroll behavior
+        const chatBox = document.getElementById('chat-box');
+        const observer = new MutationObserver(() => {
+            const messages = chatBox.children;
+            if (messages.length > 0) {
+                messages[messages.length - 1].scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'end'
+                });
+            }
+        });
+
+        observer.observe(chatBox, { childList: true });
+    </script>
+</body>
+</html>

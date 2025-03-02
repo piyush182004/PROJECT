@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-gray-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land Investment AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="gradient-bg min-h-screen text-white overflow-x-hidden">
+    <div class="container mx-auto px-6 py-12">
+        <h1 class="text-4xl font-bold text-center mb-8">🏡 AI Land Investment Classifier</h1>
+        <form action="/" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label class="block text-lg mb-2">📸 Upload a land image:</label>
+                <input type="file" name="file" required class="w-full p-2 rounded-lg bg-gray-700 text-white">
+            </div>
+
+            <div>
+                <label class="block text-lg mb-2">1. Total land area (in acres):</label>
+                <input type="text" name="land_area" required class="w-full p-2 rounded-lg bg-gray-700 text-white">
+            </div>
+
+            <div>
+                <label class="block text-lg mb-2">2. Exact location of the land (latitude, longitude):</label>
+                <input type="text" name="location" required class="w-full p-2 rounded-lg bg-gray-700 text-white">
+            </div>
+
+            <div>
+                <label class="block text-lg mb-2">3. Current land use (residential, commercial, industrial):</label>
+                <input type="text" name="land_use" required class="w-full p-2 rounded-lg bg-gray-700 text-white">
+            </div>
+
+            <div>
+                <label class="block text-lg mb-2">4. Nearby infrastructures (schools, malls, hospitals):</label>
+                <input type="text" name="nearby_infrastructure" required class="w-full p-2 rounded-lg bg-gray-700 text-white">
+            </div>
+
+            <div>
+                <label class="block text-lg mb-2">5. Current land price per acre (INR):</label>
+                <input type="text" name="land_price" required class="w-full p-2 rounded-lg bg-gray-700 text-white">
+            </div>
+
+            <button type="submit" class="btn-neon w-full py-3 mt-6">🔍 Analyze Investment</button>
+        </form>
+    </div>
+</body>
+</html>
